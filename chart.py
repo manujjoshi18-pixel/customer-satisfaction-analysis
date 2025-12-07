@@ -7,15 +7,12 @@ import numpy as np
 np.random.seed(42)
 
 categories = ['Electronics', 'Home Furnishing', 'Grocery', 'Apparel', 'Sports']
-
-# Generate scores per category individually
 means = [4.2, 4.0, 4.6, 3.9, 4.3]
 
 scores = []
 for mean in means:
     scores.append(np.random.normal(loc=mean, scale=0.25, size=30))
 
-# Convert to mean score per category
 avg_scores = [np.mean(s) for s in scores]
 
 df = pd.DataFrame({
@@ -23,24 +20,28 @@ df = pd.DataFrame({
     'Average Satisfaction': avg_scores
 })
 
-# Apply professional seaborn styling
+# Styling
 sns.set_style("whitegrid")
 sns.set_context("talk")
 
-plt.figure(figsize=(8, 8))  # 8 inches × 64 dpi = 512px
+# Create figure
+fig = plt.figure(figsize=(8, 8), dpi=64)
+ax = fig.add_subplot(111)
 
 sns.barplot(
     data=df,
     x='Product Category',
     y='Average Satisfaction',
-    palette='viridis'
+    palette='viridis',
+    ax=ax
 )
 
-plt.title("Average Customer Satisfaction by Product Category", fontsize=16)
-plt.xlabel("Product Category")
-plt.ylabel("Avg Satisfaction Score")
+ax.set_title("Average Customer Satisfaction by Product Category")
+ax.set_xlabel("Product Category")
+ax.set_ylabel("Avg Satisfaction Score")
 
-# Save figure with exact resolution
-plt.savefig('chart.png', dpi=64, bbox_inches='tight')
+# Force exact 512x512 output
+fig.set_size_inches(8, 8)
+fig.savefig("chart.png", dpi=64, bbox_inches=None)
 
 plt.show()
